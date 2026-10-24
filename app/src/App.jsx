@@ -1,7 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import SearchResult from './components/SearchResult/SearchResult';
+
+export const BASE_URL = "http://localhost:9000"
 
 function App() {
+
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchFoodData = async () => {
+            setLoading(true);
+
+            try {
+                const response = await fetch(BASE_URL);
+                const json = await response.json();
+                setData(json);
+                setLoading(false);
+            } catch (error) {
+                setError("Unable to fetch data");
+            }
+
+        };
+        fetchFoodData();
+    }, []);
+    console.log(data);
+    
+
+
+    if(error) return <div>{error}</div>
+    if(loading) return <div>loading.....</div>
+
     return (
         <Container>
             <TopSection>
@@ -19,6 +50,8 @@ function App() {
                 <Button>Lunch</Button>
                 <Button>Dinner</Button>
             </FilterContainer>
+
+            <SearchResult data={data} />
         </Container>
     )
 }
@@ -54,9 +87,10 @@ const FilterContainer = styled.section`
     display: flex;
     justify-content: center;
     gap: 14px;
+    padding-bottom: 40px;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
     background-color: #ff4343;
     border: none;
     border-radius: 5px;
