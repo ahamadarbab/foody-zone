@@ -7,6 +7,7 @@ export const BASE_URL = "http://localhost:9000"
 function App() {
 
     const [data, setData] = useState(null);
+    const [filteredData, setFilteredData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -26,40 +27,53 @@ function App() {
         };
         fetchFoodData();
     }, []);
-    console.log(data);
-    
+
+    const searchFood = (e) => {
+        const searchValue = e.target.value;
+
+        if(searchValue === "") {
+            setFilteredData(null);
+        }
+
+        const filter = data?.filter((food) => 
+            food.name.toLowerCase().includes(searchValue.toLowerCase())
+        );
+        setFilteredData(filter);
+    };
 
 
     if(error) return <div>{error}</div>
     if(loading) return <div>loading.....</div>
 
     return (
-        <Container>
-            <TopSection>
-                <div className='logo'>
-                    <img src="/logo.svg" alt="logo" />
-                </div>
-                <div className="search">
-                    <input type="text" placeholder='Search Food...' />
-                </div>
-            </TopSection>
+        <>
+            <Container>
+                <TopSection>
+                    <div className='logo'>
+                        <img src="/logo.svg" alt="logo" />
+                    </div>
+                    <div className="search">
+                        <input onChange={searchFood} type="text" placeholder='Search Food...' />
+                    </div>
+                </TopSection>
 
-            <FilterContainer>
-                <Button>All</Button>
-                <Button>Breakfast</Button>
-                <Button>Lunch</Button>
-                <Button>Dinner</Button>
-            </FilterContainer>
+                <FilterContainer>
+                    <Button>All</Button>
+                    <Button>Breakfast</Button>
+                    <Button>Lunch</Button>
+                    <Button>Dinner</Button>
+                </FilterContainer>
+            </Container>
 
-            <SearchResult data={data} />
-        </Container>
+            <SearchResult data={filteredData} />
+        </>
     )
 }
 
 export default App
 
-const Container = styled.div`
-    max-width: 1200px;
+export const Container = styled.div`
+    max-width: 1250px;
     margin: 0 auto;
 `;
 

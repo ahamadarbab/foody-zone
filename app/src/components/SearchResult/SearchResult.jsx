@@ -1,28 +1,30 @@
 import styled from "styled-components";
-import { BASE_URL, Button } from "../../App";
+import { BASE_URL, Button, Container } from "../../App";
 
 
 function SearchResult({ data }) {
     return (
         <FoodCardContainer>
-            <FoodCards>
-                {data?.map(({ name, image, text, price }) => (
-                    <FoodCard key={name}>
-                        <div className="food_image">
-                            <img src={BASE_URL + image} />
-                        </div>
-
-                        <div className="food_info">
-                            <div className="info">
-                                <h3>{name}</h3>
-                                <p>{text}</p>
+            <Container>
+                <FoodCards>
+                    {data?.map(({ name, image, text, price }) => (
+                        <FoodCard key={name}>
+                            <div className="food_image">
+                                <img src={BASE_URL + image} />
                             </div>
 
-                            <Button>${price.toFixed(2)}</Button>
-                        </div>
-                    </FoodCard>
-                ))}
-            </FoodCards>
+                            <div className="food_info">
+                                <div className="info">
+                                    <h3>{name}</h3>
+                                    <p>{text}</p>
+                                </div>
+
+                                <Button>${price.toFixed(2)}</Button>
+                            </div>
+                        </FoodCard>
+                    ))}
+                </FoodCards>
+            </Container>
         </FoodCardContainer>
     );
 };
@@ -30,7 +32,7 @@ function SearchResult({ data }) {
 export default SearchResult
 
 const FoodCardContainer = styled.section`
-    height: calc(100vh - 211px);      
+    min-height: calc(100vh - 211px);      
     background-image: url("/bg.png");
     background-size: cover;
 `;
@@ -38,8 +40,8 @@ const FoodCardContainer = styled.section`
 const FoodCards = styled.div`
     display: flex;
     flex-wrap: wrap;
-    row-gap: 32px;
-    column-gap: 20px;
+    row-gap: 45px;
+    column-gap: 30px;
     justify-content: center;
     align-items: center;
     padding-top: 80px;
@@ -84,14 +86,15 @@ const FoodCard = styled.div`
         h3 {
             margin-top: 8px;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 700;
         }
         p {
-            margin-top: 4px;
+            margin-top: 6px;
             font-size: 12px;
         }
         button {
-            font-size: 12px;
+            font-size: 14px;
+            margin: 0 6px 6px 0;
         }
     }
 `;
